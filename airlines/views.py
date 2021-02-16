@@ -365,7 +365,7 @@ def check_in(request, booking_id, pas_id):
     date = flight.days.day
     flight_id = flight.flight.id
 
-    for i in range(2):
+    for i in range(22):
         try:
             row = Row.objects.get(flight=flight, number=(i+1))
         except Row.DoesNotExist:
@@ -373,14 +373,14 @@ def check_in(request, booking_id, pas_id):
         if row == None:
             row = Row.objects.create(flight=flight, number=(i+1))
             row.save()
-            for j in range(2):
+            for j in range(6):
                 seat = Seat.objects.create(flight=flight, row=row, number=j+1)
                 seat.save()
 
     suited_seats = []
-    for i in range(2):
+    for i in range(22):
         row = Row.objects.get(flight=flight, number=(i+1))
-        for j in range(2):
+        for j in range(6):
             seat = Seat.objects.get(flight=flight, row=row, number=(j+1))
             if seat.taken == False:
                 suited_seats.append(seat)
@@ -398,7 +398,7 @@ def check_in(request, booking_id, pas_id):
         second_flight_id = second_flight.flight.id
         flight_ids = str(flight_id) + "_" + str(second_flight_id)
 
-        for i in range(2):
+        for i in range(22):
             try:
                 row = Row.objects.get(flight=second_flight, number=(i+1))
             except Row.DoesNotExist:
@@ -406,14 +406,14 @@ def check_in(request, booking_id, pas_id):
             if row == None:
                 row = Row.objects.create(flight=second_flight, number=(i+1))
                 row.save()
-                for j in range(2):
+                for j in range(6):
                     seat = Seat.objects.create(flight=second_flight, row=row, number=j+1)
                     seat.save()
 
         suited_seats_on_second = []
-        for i in range(2):
+        for i in range(22):
             row = Row.objects.get(flight=second_flight, number=(i+1))
-            for j in range(2):
+            for j in range(6):
                 seat = Seat.objects.get(flight=second_flight, row=row, number=(j+1))
                 if seat.taken == False:
                     suited_seats_on_second.append(seat)
