@@ -1,0 +1,249 @@
+{% extends "airlines/layout.html" %}
+{% load static %}
+
+{% block title %}Flight Search. StayFree Airlines.{% endblock %}
+
+pers
+
+{% block body %}
+<div class="form-container cont">
+	<form class="myform" action="{% url 'result' %}" autocomplete="off" method="post">
+		{% csrf_token %}
+		<div class="form-check form-check-inline mb-3 ml-sm-5">
+			<input class="form-check-input" type="checkbox" id="one-way" value="one-way">
+			<label class="form-check-label" for="one-way">one way</label>
+		</div>
+		<div class="form-check form-check-inline mb-3">
+			<input class="form-check-input" type="checkbox" id="round-trip" name="way" value="round-trip">
+			<label class="form-check-label" for="round-trip">round trip</label>
+		</div><br>
+
+		<div class="form-inline">
+			<div id="dep-cont" class="form-group mb-3">{{ form.departure }}
+				<diV id="depatures">Dep</diV>
+			</div>
+			<div class="form-group ml-3 mr-3 mb-3"><button id="exchange">
+				<img class="exchange" 
+				src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlZYtNOISHS0Ji0spSVyemcOO7-P-LR5iAHA&usqp=CAU">
+			</button></div>
+
+			<div id="arr-cont" class="input form-group mr-4 mb-3">{{ form.arrival }}
+				<div id="arrivals">Arr</div>
+			</div>
+			<div class="form-group mr-3 mb-3" id="ahead">
+				<span id="first_date">{{ form.date }}
+				</span>
+			</div>
+			<div class="form-group mr-3 mb-3" id="back-c"><span class="mr-1">{{ form.back.label_tag }}</span>
+				<span>{{ form.back }}</span>
+			</div>
+		</div>
+		<div class="form-inline">
+			<input class="ml-sm-5 form-control" id="person" name="person" type="number" min="1" max="4"
+				value="{% if pers %}{{ pers }}{% else %}1{% endif %}">
+			<label class="ml-1" for="person">person(s)</label>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input ml-sm-5" type="checkbox" id="transfer" name="transfer" value="transfer">
+				<label class="form-check-label mr-3" for="transfer">transit routes</label>
+			</div>
+			<button type="submit" class="btn submitbtn ml-auto mt-2 mr-5">Search</button>
+		</div>
+	</form>
+</div>
+
+<p id="trans">{{ do_transit }}</p>
+
+<!-- ahaed strict-->
+<div class="text-center">
+	<p> {{ mes }}</p>
+<h3 id="ahead-titles"></h3>
+	{% if suitable %}
+	{% for s in suitable %}
+	<div class="trip-one row">
+		<div class="text-center d-none col-lg-1 d-lg-block d-xl-block">
+			<img class="smaler" src="{{ s.departure.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center">
+				<span class="code airport">{{ s.departure.code }}</span><br>
+				<span class="code time">{{ s.departure_time|time:"H:i" }}
+				</span>
+		</div>
+		<div class="col-md-4 duration_line">
+			<div class="duration code">
+				{{ s.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="text-center d-none col-lg-1 d-lg-block d-xl-block">
+			<img class="smaler" src="{{ s.arrival.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center">
+				<span class="code airport">{{ s.arrival.code }}</span><br>
+				<span class="code time">{{ s.arrival_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-2 price text-center"><span>{{ s.price }} $</span></div>
+		<div class="col-md-2">
+			<a href="{% url 'flight-detail' s.id date %}">
+				<button class="btn submitbtn ml-2 book">Book</button>
+			</a>
+		</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% endif %}
+</div>
+
+<!-- ahaed transfer-->
+<div class="text-center">
+	{% if transfer_list %}
+	{% for t in transfer_list %}
+	<div class="trip-one row">
+		{% for key, value in t.items %}
+		{% if key == 'first' %}
+		<div class="col-lg-1 d-none d-lg-block d-xl-block">
+			<img class="smaler" src='{{ value.departure.country.flag }}'></div>
+		<div class="col-md-2 col-lg-1"><span class="code airport d-flex justify-content-center">{{ value.departure.code }}</span>
+			<span class="code time d-flex justify-content-center">{{ value.departure_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+				{{ value.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+			src="{{ value.arrival.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport d-flex justify-content-center">
+				{{ value.arrival.code }}</span>
+			<div class="code transit-time row">
+				<div class="col-6 d-flex justify-content-center">{{ value.arrival_time|time:"H:i" }}</div>
+				{% endif %}
+				{% if key == 'second' %}
+				<div class="col-6 d-flex justify-content-center">{{ value.departure_time|time:"H:i" }}</div>
+			</div>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+				{{ value.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+			src="{{ value.arrival.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport d-flex justify-content-center">
+				{{ value.arrival.code }}</span>
+			<span class="code time d-flex justify-content-center">{{ value.arrival_time|time:"H:i" }}</span>
+		</div>
+		{% endif %}
+		{% if key == 'price' %}
+		<div class="col-md-2 price">
+			<span>{{ value }} $</span>
+		</div>
+		{% endif %}
+		{% if key == 'ids' %}
+		<div class="col-md-2">
+			<a href="{% url 'transit-flight-detail' value date %}">
+				<button class="btn submitbtn ml-2 book">Book</button>
+			</a>
+		</div>
+		{% endif %}
+		{% endfor %}
+	</div>
+{% endfor %}
+{% endif %}
+</div>
+
+<!-- back strict-->
+
+<div class="text-center">
+<h3 id="back-titles"></h3>
+{% if back_suitable %}
+{% for s in back_suitable %}
+	<div class="trip-one row">
+		<div class="col-lg-1 d-none d-lg-block d-xl-block text-center">
+			<img class="smaler" src="{{ s.departure.country.flag }}">
+		</div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport">{{ s.departure.code }}</span><br>
+			<span class="code time">{{ s.departure_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-4 duration_line">
+			<div class="duration code">
+				{{ s.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block text-center">
+			<img class="smaler" src="{{ s.arrival.country.flag }}">
+		</div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport">{{ s.arrival.code }}</span><br>
+			<span class="code time">{{ s.arrival_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-2 price"><span>{{ s.price }} $</span></div>
+		<div class="col-md-2">
+			<a href="{% url 'flight-detail' s.id back %}">
+				<button class="btn submitbtn ml-2 book">Book</button>
+			</a>
+		</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% endif %}
+</div>
+
+<!-- back transfer-->
+<div class="text-center">
+	{% if back_transfer_list %}
+	{% for t in back_transfer_list %}
+	<div class="trip-one row">
+		{% for key, value in t.items %}
+		{% if key == 'first' %}
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+			src='{{ value.departure.country.flag }}'></div>
+		<div class="col-md-2 col-lg-1"><span class="code airport d-flex justify-content-center">{{ value.departure.code }}</span>
+			<span class="code time d-flex justify-content-center">{{ value.departure_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+				{{ value.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+			src="{{ value.arrival.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport d-flex justify-content-center">
+				{{ value.arrival.code }}</span>
+			<div class="code transit-time row">
+				<div class="col-6 d-flex justify-content-center">{{ value.arrival_time|time:"H:i" }}</div>
+				{% endif %}
+				{% if key == 'second' %}
+				<div class="col-6 d-flex justify-content-center">{{ value.departure_time|time:"H:i" }}</div>
+			</div>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+			{{ value.duration|time:"H:i" }}
+			</div>
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+			src="{{ value.arrival.country.flag }}"></div>
+		<div class="col-md-2 col-lg-1 text-center"><span class="code airport d-flex justify-content-center">
+				{{ value.arrival.code }}</span>
+			<span class="code time d-flex justify-content-center">{{ value.arrival_time|time:"H:i" }}</span>
+		</div>
+		{% endif %}
+		{% if key == 'price' %}
+		<div class="col-md-2 price">
+			<span>{{ value }} $</span>
+		</div>
+		{% endif %}
+		{% if key == 'ids' %}
+		<div class="col-md-2">
+			<a href="{% url 'transit-flight-detail' value back %}">
+				<button class="btn submitbtn ml-2 book">Book</button>
+			</a>
+		</div>
+		{% endif %}
+		{% endfor %}
+	</div>
+{% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'airlines/air.js' %}"></script>
+{% endblock %}

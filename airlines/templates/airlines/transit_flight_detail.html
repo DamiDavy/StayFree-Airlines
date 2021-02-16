@@ -1,0 +1,238 @@
+{% extends "airlines/layout.html" %}
+{% load static %}
+
+{% block title %}Transit Flight Details. StayFree Airlines.{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 booking">
+			<h2>Booking A Transit Flight</h2>
+			<div class="row mb-4 mt-4">
+				<div class="col-5">
+					<div class="row">
+						<div class="col-lg-4 d-none d-lg-block d-xl-block">
+							<span class="flags d-lg-block d-xl-block"><img class="smaler detail-flag" 
+								src="{{ first.departure.country.flag }}"></span>
+						</div>
+						<div class="col-lg-8 text-center">
+							<span class="code airport">{{ first.departure.code }}</span>
+						</div>
+					</div>
+					<div class="code city text-center"><span>{{ first.departure.city }}</span></div>
+					<div class="text-center row">
+						<div class="col-lg-4">
+							<strong><span class="code time">{{ first.departure_time|time:"H:i" }}</span></strong>
+						</div>
+						<div class="col-lg-8">
+							<span class="code timedate">{{date}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 duration_line">
+					<div class="duration code">{{ first.duration|time:"H:i" }}</div>
+				</div>
+				<div class="col-5">
+					<div class="row">
+						<div class="col-lg-4 d-none d-lg-block d-xl-block">
+							<span class="flags d-lg-block d-xl-block">
+								<img class="smaler detail-flag" src="{{ first.arrival.country.flag }}"></span>
+						</div>
+						<div class="col-lg-8 text-center">
+							<span class="code airport">{{ first.arrival.code }}</span>
+						</div>
+					</div>
+					<div class="code city text-center">
+						<span>{{ first.arrival.city }}</span>
+					</div>
+					<div class="text-center row">
+						<div class="col-lg-4">
+						<strong><span class="code time">{{ first.arrival_time|time:"H:i" }}</span></strong>
+					</div>
+					<div class="col-lg-8">
+						<span class="code timedate">
+							{{ first_flight_arrival_date }}
+						</span>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-5">
+					<div class="row">
+						<div class="col-lg-4 d-none d-lg-block d-xl-block">
+							<span class="d-lg-block d-xl-block">
+								<img class="smaler detail-flag" src="{{ second.departure.country.flag }}"></span>
+						</div>
+						<div class="col-lg-8 text-center">
+							<span class="code airport">{{ second.departure.code }}</span>
+						</div>
+					</div>
+					<div class="code city text-center"><span>{{ second.departure.city }}</span></div>
+					<div class="text-center row">
+						<div class="col-lg-4">
+						<strong><span class="code time">{{ second.departure_time|time:"H:i" }}</span></strong>
+					</div>
+					<div class="col-lg-8">
+						<span class="code timedate">
+							{{ second_flight_departure_date }}
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 duration_line">
+					<div class="duration code">{{ second.duration|time:"H:i" }}</div>
+					</div>
+					<div class="col-5">
+						<div class="row">
+							<div class="col-lg-4 d-none d-lg-block d-xl-block">
+								<span class="flags d-lg-block d-xl-block">
+									<img class="smaler detail-flag" src="{{ second.arrival.country.flag }}"></span>
+							</div>
+							<div class="col-lg-8 text-center">
+								<span class="code airport">{{ second.arrival.code }}</span>
+							</div>
+						</div>
+						<div class="code city text-center">
+							<span>{{ second.arrival.city }}</span>
+						</div>
+						<div class="text-center row">
+							<div class="col-lg-4">
+								<strong><span class="code time">{{ second.arrival_time|time:"H:i" }}</span></strong>
+							</div>
+							<div class="col-lg-8">
+								<span class="code timedate">
+									{{ second_flight_arrival_date }}
+								</span>
+							</div>
+						</div>
+					</div>
+					</div>
+					<hr>
+
+			<h5>Already booked for:</h5>
+			{% for p in booking.passenger.all %}
+			<div class="row mb-1">
+				<div class="col-lg-3">
+					<span class="code time">{{ p.first_name }} {{ p.last_name }}</span>
+				</div>
+				<div class="col-lg-9 text-center">
+				<div class="row">
+					<div class="col-4">
+					{% if p.seat.all %}
+					{% for s in p.seat.all %}
+					{% if s.flight.id == booking.flight1.id %}
+					<strong><span class="cheked-in">Checked In</span></strong><br>
+					<span>Seats {{ s.row }}{{ s.lit }}</span>
+					{% elif s.flight.id == booking.flight2.id %}
+					& {{ s.row }}{{ s.lit }}
+					{% endif %}
+					{% endfor %}
+					{% else %}
+					<a href="{% url 'check_in' booking.id p.id %}">
+						<button class="btn-for-checkin btn btn-secondary btn-sm
+						{% if not booking.can_check_in %}forbidden{% endif %}
+						{% if booking.past %}forbidden{% endif %}"
+						{% if booking.past %}disabled{% endif %}
+						{% if not booking.can_check_in %}disabled{% endif %}>Check In</button>
+					</a>
+					{% endif %}
+				</div>
+				<div class="col-5">
+				{% if p in booking.passengers_with_baggage.all %}
+					<span class="cheked-in">baggage's added</span>
+					{% else %}
+					<a href="{% url 'baggage' p.id booking.id date %}">
+						<button class="btn btn-outline-success btn-sm baggage_passenger
+						{% if booking.past %}forbidden{% endif %}" id="p{{p.id}}b{{booking.id}}"
+						{% if booking.past %}disabled{% endif %}>Add Baggage</button>
+					</a>
+					{% endif %}
+				</div>
+				<div class="col-2">
+					<a href="{% url 'delete' p.id booking.id date %}">
+						<button class="delete_passenger btn btn-outline-danger btn-sm
+						{% if booking.past %}forbidden{% endif %}" id="d{{p.id}}b{{booking.id}}"
+						{% if booking.past %}disabled{% endif %}>Delete</button>
+					</a>
+				</div>
+					</div>
+					</div>
+					</div>
+				{% endfor %}
+
+			<p class="code timedate">check-in opens 24 hours before departure</p>
+
+			<hr>
+			<div class="row">
+			<div class="price-counting col-lg-6">base price:</div>
+				<div class="price-counting col-lg-6">
+					<span id="single_price">{{ first.price }}</span> +
+					<span id="price_for_transit">{{ second.price }}</span>
+					$ <span class="multiplication-icon">&#9587</span>
+					<span id="pas_count">{{ booking.passenger.count }}</span>
+				</div>
+			</div>
+				<div id="baggage">
+				{% if booking.passengers_with_baggage.count != 0 %}
+				<div class="row">
+					<div class="price-counting col-lg-6">
+						<span>baggage price</span>
+					</div>
+					<div class="price-counting col-lg-6">
+				<span id="baggage_price">{{ booking.baggage_price }}</span> $
+				<span class="multiplication-icon">&#9587</span>
+				<span id="pas_bag_count">{{ booking.passengers_with_baggage.count }}</span>
+			</div>
+		</div>
+			{% endif %}
+		</div>
+		<div class="price">
+				<strong>Total Price: <span id="total_price"></span> $</strong>
+			</div>
+		</div>
+
+		{% if user.is_authenticated %}
+		<div class="col-md-6 booking lborder">
+			{% if form_pas %}
+			<div class="pasenger-form">
+				<h5>Passenger Data</h5>
+				<form action="{% url 'transit-flight-detail' ids date %}" autocomplete="off" method="post">
+					{% csrf_token %}
+					{{ form_pas.first_name.label_tag }}
+					{{ form_pas.first_name }}
+					{{ form_pas.last_name.label_tag }}
+					<div class="mb-3">{{ form_pas.last_name }}</div>
+					<div class="form-inline">
+						<div class="mr-1">{{ form_pas.date_of_birth.label_tag }}</div>
+						<div class="mr-4">{{ form_pas.date_of_birth }}</div> {{ form_pas.gender }}
+					</div>
+					<br>
+					<input class="btn submitbtn ml-auto
+					{% if booking.past %}forbidden{% endif %}
+					{% if booking.limit_count_of_passangers %}forbidden{% endif %}"
+					 type="submit" value="Confirm"
+					{% if booking.past %}disabled{% endif %}
+					{% if booking.limit_count_of_passangers %}disabled{% endif %}>
+					<p class="code timedate">you can register up to 4 passengers</p>
+				</form>
+			</div>
+			{% else %}
+			<div class="col-md-6 booking lborder">
+				<p>You have to <a href="{% url 'login' %}">log in</a> or
+					<a href="{% url 'register' %}">register</a> to continue reservation.</p>
+				</div>
+			{% endif %}
+			{% if mes %}
+			{{ mes }}
+			{% endif %}
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'airlines/flight.js' %}"></script>
+{% endblock %}
+ 

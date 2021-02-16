@@ -1,0 +1,184 @@
+body {background-color: WhiteSmoke;}
+
+#dep-cont, #arr-cont {position: relative;}
+
+#depatures, #arrivals {
+    position: absolute;
+    border: 1px solid gray;
+    border-radius: 1px;
+    top: 40px;
+    left: 0px;
+    width: 100%;
+    background-color: #eee;
+    z-index: 2;
+}
+
+.cont {    
+    margin: auto;
+    width: 80%;
+    border: 1px solid Gainsboro;
+    border-radius: 10px;
+}
+
+.form-container {
+    padding: 20px;
+    margin-top: -30px;
+    background-color: lavender;
+    z-index: 1;
+}
+
+.trip-one {
+    margin: auto;
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid lavender;
+}
+
+.main-image {
+    height: 250px;
+    width:100%;
+    object-fit: cover;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+.container-image {
+    position: relative;
+    text-align: center;
+    color:white;
+    z-index: -1;
+}
+
+h2, h3, h5 { color:gray; padding:10px 0; }
+
+.centered {
+    font-size: 70px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Julius Sans One', sans-serif;
+    animation-name: grow;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    z-index: 1;
+}
+
+@keyframes grow {
+    from {
+        opacity: 0.7;
+    }
+    to {
+        opacity: 1.0;
+    }
+}
+
+.submitbtn {background-color: DarkSlateGray; color: white; width:150px;}
+.submitbtn:hover {background-color:Teal; color: white;}
+
+.city-item {
+    cursor: pointer;
+    display: block;
+    padding: 5px;
+}
+
+.city-item:hover { background-color: aquamarine;}
+
+#exchange { border: 1px solid gray; border-radius: 3px;}
+
+.smaler {
+    height:50%;
+    width:120%;
+    object-fit: cover;
+    opacity: 0.8;
+    border:1px solid lavender;
+}
+.detail-flag {height:40px;}
+
+#trans { display: none; }
+
+.code { font-family: sans-serif; color: gray; }
+
+.airport {font-size:35px;}
+.total_price {font-size:30px;}
+.time {font-size:20px;}
+.transit-time {font-size:13px;}
+
+.contic {position: relative;}
+.absolute { position: absolute; top: 8px; left: 16px; }
+
+.duration_line {
+    position: relative;
+    font-size:18px;
+    border-bottom: 1px solid gray;
+    height:40px;
+}
+
+.duration {
+    position: absolute;
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    text-align: center;
+}
+
+.price {float:right; font-size:25px; color:DarkSlateGrey; padding:15px;}
+
+.price-counting {font-size:18px; color:DarkSlateGrey;}
+
+.book {height:55px; font-size:25px;}
+
+.booking {padding:10px 20px;}
+
+.lborder {border-left:1px solid rgb(168, 168, 168);}
+
+.timedate { font-size: 15px; }
+
+.detail-link { text-decoration: none; }
+
+.detail-link:hover { text-decoration: none; }
+
+.past { background-color: lavender; }
+
+.city { font-size: 25px; }
+
+.multiplication-icon {
+    font-size:15px;
+    vertical-align: text-top;
+}
+
+.cheked-in { color:DarkCyan; }
+
+.forbidden { cursor: not-allowed; }
+
+@media only screen and (max-width: 700px) {
+    .detail-link-div {
+      border: 1px solid lavender;
+      border-radius: 15px;
+      width:80%;
+      margin:0 auto;
+      background-color: lavender;
+      color: white;
+    }
+  }
+
+.exchange {
+    height: 20px;
+    width: 20px;
+    opacity: 0.8;
+}
+#exchange { background-color: white; }
+
+.page { color:gray; }
+.page:hover { color:gray; }
+
+.back-active > a {
+    background-color: gray;
+    color: white;
+}
+
+.back-active > a:hover {
+    background-color: gray;
+    color: white;
+}
