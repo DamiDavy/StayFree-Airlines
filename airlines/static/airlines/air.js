@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
 //searching of cities in dababase starts with input value
 function load_search(what) {
     const res = document.querySelector(`#${what}`);
-    res.style.display = 'block';
     const pattern = document.querySelector(`#${what}_input`).value;
     fetch("/search", {
         method: 'POST',
@@ -142,6 +141,7 @@ function load_search(what) {
             res.style.display = "none";
         }
         else {
+            res.style.display = 'block';
             res.innerHTML = "";
             results.forEach(item => {
                 const element = document.createElement("span");
