@@ -217,12 +217,12 @@
 					<p class="code timedate">you can register up to 4 passengers</p>
 				</form>
 			</div>
-			{% else %}
+			{% endif %}
+		{% else %}
 			<div class="col-md-6 booking lborder">
 				<p>You have to <a href="{% url 'login' %}">log in</a> or
 					<a href="{% url 'register' %}">register</a> to continue reservation.</p>
 				</div>
-			{% endif %}
 			{% if mes %}
 			{{ mes }}
 			{% endif %}

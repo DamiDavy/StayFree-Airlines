@@ -3,8 +3,8 @@
 {% block title %}Registration. StayFree Airlines.{% endblock %}
 
 {% block body %}
-
-<h2>Register</h2>
+<div class="container">
+<h2 class="text-center">Register</h2>
 
 {% if message %}
 <div>{{ message }}</div>
@@ -29,5 +29,5 @@
 <br>
 Or <a href="{% url 'login' %}">log in here.</a><br><br>
 </div>
-
+</div>
 {% endblock %}
