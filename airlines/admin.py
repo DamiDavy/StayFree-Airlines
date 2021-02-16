@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Country, Passenger, Airport, Flight, Current, Single, Booking, Row, Seat
+from .models import Country, Passenger, Airport, Flight, Current, Single, Booking, Row, Seat, User
 
 admin.site.register(Country)
 admin.site.register(Passenger)
@@ -11,4 +11,5 @@ admin.site.register(Single)
 admin.site.register(Booking)
 admin.site.register(Row)
 admin.site.register(Seat)
+admin.site.register(User)
 
