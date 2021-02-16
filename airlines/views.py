@@ -13,7 +13,7 @@ from datetime import timedelta, datetime, date
 from django.core.paginator import Paginator
 
 from .forms import FlightForm, PassengerForm
-from .models import Country, Passenger, Airport, Flight, Current, Single, Booking, Row, Seat, User
+from .models import Country, Passenger, Airport, Flight, Current, Single, Booking, Row, Seat
 from .utils import direct, transit
 
 # Create your views here.
