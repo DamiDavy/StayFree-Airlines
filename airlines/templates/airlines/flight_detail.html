@@ -69,7 +69,7 @@
 					{% for s in p.seat.all %}
 					{% if s.flight.id == booking.flight1.id %}
 					<strong><span class="cheked-in">Checked In</span></strong><br> 
-					<span>Seats {{ s.row }}{{ s.lit }}</span>
+					<span>Seat {{ s.row }}{{ s.lit }}</span>
 					{% endif %}
 					{% endfor %}
 					{% else %}
