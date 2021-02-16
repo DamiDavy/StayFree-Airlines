@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse
@@ -515,7 +515,7 @@ def register(request):
                 "message": "Passwords must match."
             })
         try:
-            user = AbstractUser.objects.create_user(username, email, password)
+            user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
             return render(request, "airlines/register.html", {
