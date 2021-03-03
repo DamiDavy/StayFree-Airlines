@@ -11,10 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('#ahead-titles').innerHTML = departure + " - " + arrival;
     }
 
-    if (document.querySelector('#round-trip').checked === true) {
-        document.querySelector('#back-titles').innerHTML = arrival + " - " + departure;
-    }
-
     //adding min attribute equal today to date field
     let now = new Date();
     let day = ("0" + now.getDate()).slice(-2);
@@ -47,6 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('#one-way').checked = false;
         }
     })
+
+    if (document.querySelector('#round-trip').checked === true) {
+        document.querySelector('#back-titles').innerHTML = arrival + " - " + departure;
+    }
 
     if (document.querySelector('#trans').innerHTML == "['transfer']")
         document.querySelector('#transfer').checked = true;
