@@ -2,39 +2,40 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{% block title %}StayFree Airlines{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+
+<head>
+    <title>{% block title %}StayFree Airlines{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="{% static 'airlines/styles.css' %}" rel="stylesheet">
-        <link rel="icon" 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{% static 'airlines/styles.css' %}" rel="stylesheet">
+    <link rel="icon"
         href="https://www.freeiconspng.com/thumbs/airplane-icon-png/plane-icon--standard-transport-iconset--aha-soft-18.png"
         type="image/png">
-    </head>
-    <body>
-        <div class="bg-secondary text-white text-center py-1">non-commercial use only</div>
+</head>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-expand-lg">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" 
-        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-        aria-expanded="false" aria-label="Toggle navigation">
+<body>
+    <div class="bg-secondary text-white text-center py-1">non-commercial use only</div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-          
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item mr-1">
                     <a class="nav-link" href="">
-                    {% if user.is_authenticated %}
-                    As <strong>{{ user.username }}</strong>
-                    {% else %}
-                    Not signed in
-                    {% endif %}
+                        {% if user.is_authenticated %}
+                        As <strong>{{ user.username }}</strong>
+                        {% else %}
+                        Not signed in
+                        {% endif %}
                     </a>
                 </li>
                 {% if user.is_authenticated %}
@@ -54,7 +55,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Search</a>
                 </li>
-            {% if user.is_authenticated %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'bookings' user.username %}">My flights</a>
                 </li>
@@ -62,54 +63,55 @@
             {% endif %}
 
         </div>
-        </nav>
+    </nav>
 
-        <div class="container-image">
-            <img src="https://i.pinimg.com/originals/d3/ef/22/d3ef22764decea99f44c4e69fa6fa9af.jpg" alt="mountain"
-                class="main-image">
-                <h1 class="centered">Stay Free</h1>
-        </div>
+    <div class="container-image">
+        <img src="https://i.pinimg.com/originals/d3/ef/22/d3ef22764decea99f44c4e69fa6fa9af.jpg" alt="mountain"
+            class="main-image">
+        <h1 class="centered">Stay Free</h1>
+    </div>
 
-        {% block body %}
-        {% endblock %}
+    {% block body %}
+    {% endblock %}
 
-        {% if page_obj %}
-        <div class="text-center my-2">
-            <ul class="pagination justify-content-center btn-group btn-group-sm">
-                <li class="page-item">
-                    <a class="page-link page" href="?page=1">The Latest</a>
-                </li>
-        
-                <li class="{% if page_obj.has_previous %} page-item {% else %} page-item disabled {% endif %}">
-                    <a class="page-link page"
-                        href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}">&laquo;</a>
-                </li>
-        
-                {% for i in page_obj.paginator.page_range %}
-                <li class="page-item {% if i == page_obj.number %} back-active {% endif %}">
-                    <a class="page-link {% if i != page_obj.number %} page {% endif %}"
-                        href="?page={{ i }}">{{ i }}</a></li>
-                {% endfor %}
-        
-        
-                <li class="{% if page_obj.has_next %} page-item {% else %} page-item disabled {% endif %}">
-                    <a class="page-link page"
-                        href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">&raquo;</a>
-                </li>
-            </ul>
-        </div>
-        {% endif %}
+    {% if page_obj %}
+    <div class="text-center my-2">
+        <ul class="pagination justify-content-center btn-group btn-group-sm">
+            <li class="page-item">
+                <a class="page-link page" href="?page=1">The Latest</a>
+            </li>
 
-        {% block script %}
-        {% endblock %}
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+            <li class="{% if page_obj.has_previous %} page-item {% else %} page-item disabled {% endif %}">
+                <a class="page-link page"
+                    href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}">&laquo;</a>
+            </li>
+
+            {% for i in page_obj.paginator.page_range %}
+            <li class="page-item {% if i == page_obj.number %} back-active {% endif %}">
+                <a class="page-link {% if i != page_obj.number %} page {% endif %}" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endfor %}
+
+
+            <li class="{% if page_obj.has_next %} page-item {% else %} page-item disabled {% endif %}">
+                <a class="page-link page"
+                    href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% block script %}
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    </body>
+</body>
+
 </html>

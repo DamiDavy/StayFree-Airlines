@@ -16,8 +16,7 @@ from .forms import FlightForm, PassengerForm
 from .models import Country, Passenger, Airport, Flight, Current, Single, Booking, Row, Seat
 from .utils import direct, transit
 
-# Create your views here.
-
+#searching suitable cities from form
 @csrf_exempt
 def search(request):
 
@@ -34,28 +33,29 @@ def search(request):
         results.append(city)
     return JsonResponse([result.serialize() for result in results], safe=False)
 
-
 def index(request):
     return render(request, "airlines/index.html", {
         "form": FlightForm(),
         })
 
+#searching suitable flights
+@csrf_exempt
 def result(request):
-    form = FlightForm(request.POST)
+    form = FlightForm(request.GET)
     if form.is_valid():
-        #ahead
+        #direct
         departure = form.cleaned_data["departure"]
         arrival = form.cleaned_data["arrival"]
         date = form.cleaned_data["date"]
         back = form.cleaned_data["back"]
-        person = int(request.POST["person"])
-        way = request.POST.getlist('way', False)
+        person = int(request.GET["person"])
+        way = request.GET.getlist('way', False)
 
         flights = Flight.objects.filter(departure__city=departure, arrival__city=arrival)
         suitable = direct(flights, date, person)
 
-        #transfer
-        transfer = request.POST.getlist('transfer', False)
+        #with transfer
+        transfer = request.GET.getlist('transfer', False)
         if transfer:
             first_flight = Flight.objects.filter(departure__city=departure)
             second_flight = Flight.objects.filter(arrival__city=arrival)
@@ -97,17 +97,32 @@ def result(request):
             back_flights = Flight.objects.filter(departure__city=arrival, arrival__city=departure)
             back_suitable = direct(back_flights, back, person)
 
-            #transfer
+            #with transfer
             if transfer:
                 back_first_flight = Flight.objects.filter(departure__city=arrival)
                 back_second_flight = Flight.objects.filter(arrival__city=departure)
                 back_transfer_list = transit(back_first_flight, back_second_flight, back, person)
 
-            if back_suitable == [] and transfer == False:
-                return render(request, "airlines/index.html", {
-                    "form": form,
-                    "mes": "Flights not Found"
-                })
+            if back_suitable == [] and not back_transfer_list:
+                if transfer == False:
+                    return render(request, "airlines/index.html", {
+                        "form": form,
+                        "suitable": suitable,
+                        "do_transit": transfer,
+                        "pers": person,
+                        "date": date,
+                        "back_mes": "Flights Not Found"
+                    })
+                else:
+                    return render(request, "airlines/index.html", {
+                        "form": form,
+                        "suitable": suitable,
+                        "transfer_list": transfer_list,
+                        "do_transit": transfer,
+                        "pers": person,
+                        "date": date,
+                        "back_mes": "Flights Not Found"
+                    })
             
             elif back_suitable == [] and suitable == []:
                 return render(request, "airlines/index.html", {
@@ -158,6 +173,7 @@ def result(request):
             "form": form
         })
 
+#detail information about direct flight
 def detail(request, pk, date):
     flight = Flight.objects.get(pk=pk)
     days = Current.objects.get(day=date)
@@ -227,7 +243,7 @@ def detail(request, pk, date):
         "arrival_date": arrival_date
     })
 
-
+#detail information about connecting route
 def transit_detail(request, ids, date):
     x = ids.index("_")
     idf = int(ids[:x])
@@ -263,12 +279,12 @@ def transit_detail(request, ids, date):
     if first_flight is None:
         first_flight = Single.objects.create(flight=first, days=days)
         first_flight.save()
-    #second transit flight
+    
     if second_flight is None:
         second_flight = Single.objects.create(flight=second, days=transit_days)
         second_flight.save()
 
-    #dates
+    #dates for templating
     if first_flight.flight.departure_time > first_flight.flight.arrival_time:
         first_flight_arrival_date = days.day + timedelta(days=1)
     else:
@@ -285,8 +301,7 @@ def transit_detail(request, ids, date):
         second_flight_arrival_date = second_flight_departure_date
 
     if request.method == "POST":
-        #first transit flight
-
+        #adding passenger
         form = PassengerForm(request.POST)
         if form.is_valid():
             if first_flight.capacity > 0 and second_flight.capacity > 0:
@@ -346,6 +361,7 @@ def transit_detail(request, ids, date):
         "second_flight_arrival_date": second_flight_arrival_date
     })
 
+#current user bookings
 def bookings(request, name):
     bookings = Booking.objects.filter(user=name)
     
@@ -359,6 +375,7 @@ def bookings(request, name):
         "page_number": page_number
     })
 
+#flight check-in, getting a seat
 def check_in(request, booking_id, pas_id):
     passenger = Passenger.objects.get(pk=pas_id)
     booking = Booking.objects.get(pk=booking_id)
@@ -426,6 +443,7 @@ def check_in(request, booking_id, pas_id):
 
         return HttpResponseRedirect(reverse("transit-flight-detail", args=(flight_ids, date,)))
 
+#deleting passenger
 def delete(request, pas_id, booking_id, date):
     passenger = Passenger.objects.get(pk=pas_id)
     booking = Booking.objects.get(pk=booking_id)
@@ -466,7 +484,7 @@ def delete(request, pas_id, booking_id, date):
             booking.delete()
             return HttpResponseRedirect(reverse("bookings", args=(request.user.username,)))
 
-
+#adding baggage
 def baggage(request, pas_id, booking_id, date):
     passenger = Passenger.objects.get(pk=pas_id)
     booking = Booking.objects.get(pk=booking_id)

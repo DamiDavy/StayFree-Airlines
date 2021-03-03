@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     const single_price = document.querySelector('#single_price').innerHTML;
     const pas_count = document.querySelector('#pas_count').innerHTML;
@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let trans;
 
-    if (price_for_transit === "") 
+    if (price_for_transit === "")
         trans = 0;
-    else 
+    else
         trans = price_for_transit;
 
-    document.querySelector('#total_price').innerHTML = ((1 * pas_count) * ((1 * single_price) + (1 * trans))) + 
-    (1 * baggage_price * pas_bag_count);
+    document.querySelector('#total_price').innerHTML = ((1 * pas_count) * ((1 * single_price) + (1 * trans))) +
+        (1 * baggage_price * pas_bag_count);
 })

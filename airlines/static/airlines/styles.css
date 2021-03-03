@@ -182,3 +182,8 @@ h2, h3, h5 { color:gray; padding:10px 0; }
     background-color: gray;
     color: white;
 }
+
+.start_page {
+    padding: 0 20px;
+    margin: 0 auto;
+}

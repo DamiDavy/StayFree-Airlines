@@ -22,11 +22,11 @@
 					<div class="code city text-center"><span>{{ flight.departure.city }}</span></div>
 					<div class="text-center row">
 						<div class="col-lg-4">
-						<strong><span class="code time">{{ flight.departure_time|time:"H:i" }}</span></strong>
-					</div>
-					<div class="col-lg-8">
-						<span class="code timedate">{{date}}</span>
-					</div>
+							<strong><span class="code time">{{ flight.departure_time|time:"H:i" }}</span></strong>
+						</div>
+						<div class="col-lg-8">
+							<span class="code timedate">{{date}}</span>
+						</div>
 					</div>
 				</div>
 				<div class="col-2 duration_line">
@@ -47,11 +47,11 @@
 					</div>
 					<div class="row text-center">
 						<div class="col-lg-4">
-						<strong><span class="code time">{{ flight.arrival_time|time:"H:i" }}</span></strong>
-					</div>
-					<div class="col-lg-8">
-						<span class="code timedate">{{ arrival_date }}</span>
-					</div>
+							<strong><span class="code time">{{ flight.arrival_time|time:"H:i" }}</span></strong>
+						</div>
+						<div class="col-lg-8">
+							<span class="code timedate">{{ arrival_date }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -63,52 +63,51 @@
 					<span class="code time">{{ p.first_name }} {{ p.last_name }}</span>
 				</div>
 				<div class="col-lg-8 text-center">
-				<div class="row">
-					<div class="col-4">
-					{% if p.seat.all %}
-					{% for s in p.seat.all %}
-					{% if s.flight.id == booking.flight1.id %}
-					<strong><span class="cheked-in">Checked In</span></strong><br> 
-					<span>Seat {{ s.row }}{{ s.lit }}</span>
-					{% endif %}
-					{% endfor %}
-					{% else %}
-					<a href="{% url 'check_in' booking.id p.id %}">
-						<button class="btn-for-checkin btn btn-secondary btn-sm
+					<div class="row">
+						<div class="col-4">
+							{% if p.seat.all %}
+							{% for s in p.seat.all %}
+							{% if s.flight.id == booking.flight1.id %}
+							<strong><span class="cheked-in">Checked In</span></strong><br>
+							<span>Seat {{ s.row }}{{ s.lit }}</span>
+							{% endif %}
+							{% endfor %}
+							{% else %}
+							<a href="{% url 'check_in' booking.id p.id %}">
+								<button class="btn-for-checkin btn btn-secondary btn-sm
 						{% if not booking.can_check_in %}forbidden{% endif %}
-						{% if booking.past %}forbidden{% endif %}"
-						{% if booking.past %}disabled{% endif %}
-						{% if not booking.can_check_in %}disabled{% endif %}
-						>Check In</button>
-					</a>
-					{% endif %}
-					</div>
-				<div class="col-5">
-				{% if p in booking.passengers_with_baggage.all %}
-					<span class="cheked-in">baggage's added</span>
-					{% else %}
-					<a href="{% url 'baggage' p.id booking.id date %}">
-					<button class="btn btn-outline-success btn-sm baggage_passenger
-					{% if booking.past %}forbidden{% endif %}" id="p{{p.id}}b{{booking.id}}"
+						{% if booking.past %}forbidden{% endif %}" 
+						{% if booking.past %}disabled{% endif %} 
+						{% if not booking.can_check_in %}disabled{% endif %}>Check In</button>
+							</a>
+							{% endif %}
+						</div>
+						<div class="col-5">
+							{% if p in booking.passengers_with_baggage.all %}
+							<span class="cheked-in">baggage's added</span>
+							{% else %}
+							<a href="{% url 'baggage' p.id booking.id date %}">
+								<button class="btn btn-outline-success btn-sm baggage_passenger
+					{% if booking.past %}forbidden{% endif %}" id="p{{p.id}}b{{booking.id}}" 
 					{% if booking.past %}disabled{% endif %}>Add Baggage</button>
-				</a>
-				{% endif %}
-			</div>
-			<div class="col-2">
-				<a href="{% url 'delete' p.id booking.id date %}">
-					<button class="delete_passenger btn btn-outline-danger btn-sm
-					{% if booking.past %}forbidden{% endif %}" id="d{{p.id}}b{{booking.id}}"
+							</a>
+							{% endif %}
+						</div>
+						<div class="col-2">
+							<a href="{% url 'delete' p.id booking.id date %}">
+								<button class="delete_passenger btn btn-outline-danger btn-sm
+					{% if booking.past %}forbidden{% endif %}" id="d{{p.id}}b{{booking.id}}" 
 					{% if booking.past %}disabled{% endif %}>Delete</button>
-				</a>
+							</a>
+						</div>
+					</div>
+				</div>
 			</div>
-				</div>
-				</div>
-				</div>
 			{% endfor %}
 
 			<hr>
 			<div class="row">
-			<div class="price-counting col-lg-6">base price:</div>
+				<div class="price-counting col-lg-6">base price:</div>
 				<div class="price-counting col-lg-6">
 					<span id="single_price">{{ flight.price }}</span>
 					<span id="price_for_transit"></span>
@@ -116,7 +115,7 @@
 					<span id="pas_count">{{ booking.passenger.count }}</span>
 				</div>
 			</div>
-				<div id="baggage">
+			<div id="baggage">
 				{% if booking.passengers_with_baggage.count != 0 %}
 				<div class="row">
 					<div class="price-counting col-lg-6">
@@ -134,7 +133,7 @@
 				<strong>Total Price: <span id="total_price"></span> $</strong>
 			</div>
 		</div>
-		
+
 
 		{% if user.is_authenticated %}
 		<div class="col-md-6 booking lborder">
@@ -154,9 +153,9 @@
 					<br>
 					<input class="btn submitbtn ml-auto
 					{% if booking.past %}forbidden{% endif %}
-					{% if booking.limit_count_of_passangers %}forbidden{% endif %}" type="submit" value="Confirm"
-					{% if booking.past %}disabled{% endif %}
-					{% if booking.limit_count_of_passangers %}disabled{% endif %}>
+					{% if booking.limit_count_of_passangers %}forbidden{% endif %}" type="submit" value="Confirm" 
+					{% if booking.past %}disabled{% endif %} 
+						{% if booking.limit_count_of_passangers %}disabled{% endif %}>
 					<p class="code timedate">you can register up to 4 passengers</p>
 				</form>
 			</div>
@@ -168,8 +167,9 @@
 		{% else %}
 		<div class="col-md-6 booking lborder">
 			<p>You have to <a href="{% url 'login' %}">log in</a> or
-				<a href="{% url 'register' %}">register</a> to continue reservation.</p>
-			</div>
+				<a href="{% url 'register' %}">register</a> to continue reservation.
+			</p>
+		</div>
 
 		{% endif %}
 	</div>
@@ -177,5 +177,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'airlines/flight.js' %}"></script>
+<script src="{% static 'airlines/flight.js' %}"></script>
 {% endblock %}

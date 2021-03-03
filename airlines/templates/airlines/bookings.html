@@ -4,94 +4,91 @@
 {% block title %}My Bookings. StayFree Airlines.{% endblock %}
 
 {% block body %}
-<div class="text-center">
+<div class="text-center container">
 	<h2>My Bookings</h2>
 	{% for s in page_obj %}
 	{% if s.transit == False %}
-		<div class="trip-one row {% if s.past %}past{% endif %}">
-			<div class="text-center flags col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+	<div class="trip-one row {% if s.past %}past{% endif %}">
+		<div class="text-center flags col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler"
 				src="{{ s.flight1.flight.departure.country.flag }}">
+		</div>
+		<div class="col-md-2 text-center">
+			<span class="code airport">{{ s.flight1.flight.departure.code }}</span><br>
+			<span class="code timedate">{{ s.flight1.days.day|date:"SHORT_DATE_FORMAT" }}
+				{{ s.flight1.flight.departure_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-4 duration_line">
+			<div class="duration code">
+				{{ s.flight1.flight.duration|time:"H:i" }}
 			</div>
-			<div class="col-md-2 text-center">
-				<span class="code airport">{{ s.flight1.flight.departure.code }}</span><br>
-					<span class="code timedate">{{ s.flight1.days.day|date:"SHORT_DATE_FORMAT" }}
-						{{ s.flight1.flight.departure_time|time:"H:i" }}</span>
-			</div>
-			<div class="col-md-4 duration_line">
-				<div class="duration code">
-					{{ s.flight1.flight.duration|time:"H:i" }}
-				</div>
-			</div>
-			<div class="col-lg-1 d-none d-lg-block d-xl-block text-center"><img class="smaler" 
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block text-center"><img class="smaler"
 				src="{{ s.flight1.flight.arrival.country.flag }}">
-			</div>
-			<div class="col-md-2 text-center"><span class="code airport">{{ s.flight1.flight.arrival.code }}</span><br>
-				<span class="code timedate">{{ s.when_arrival|date:"SHORT_DATE_FORMAT" }}
-					{{ s.flight1.flight.arrival_time|time:"H:i" }}</span>
-			</div>
-			<div class="col-md-4 col-lg-2 text-center">
-				<div class="detail-link-div">
+		</div>
+		<div class="col-md-2 text-center"><span class="code airport">{{ s.flight1.flight.arrival.code }}</span><br>
+			<span class="code timedate">{{ s.when_arrival|date:"SHORT_DATE_FORMAT" }}
+				{{ s.flight1.flight.arrival_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-4 col-lg-2 text-center">
+			<div class="detail-link-div">
 				<a class="detail-link" href="{% url 'flight-detail' s.flight1.flight.id s.flight1.days.day %}">
-<span class="code total_price">{{ s.flight1.flight.price }} $</span><br>
-				<span class="code timedate">{{ s.passenger.count }}
-					passenger{% if s.passenger.count > 1 %}s{% endif %}</span>
+					<span class="code total_price">{{ s.flight1.flight.price }} $</span><br>
+					<span class="code timedate">{{ s.passenger.count }}
+						passenger{% if s.passenger.count > 1 %}s{% endif %}</span>
 				</a>
 			</div>
-			</div>
 		</div>
-	
+	</div>
+
 	{% else %}
-		<div class="trip-one row {% if s.past %}past{% endif %}">
-			<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+	<div class="trip-one row {% if s.past %}past{% endif %}">
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler"
 				src="{{ s.flight1.flight.departure.country.flag }}"></div>
-			<div class="col-lg-2 col-md-3"><span class="code airport d-flex justify-content-center">
+		<div class="col-lg-2 col-md-3"><span class="code airport d-flex justify-content-center">
 				{{ s.flight1.flight.departure.code }}</span>
-				<span class="code timedate d-flex justify-content-center">{{ s.flight1.days.day|date:"SHORT_DATE_FORMAT" }}
-					{{ s.flight1.flight.departure_time|time:"H:i" }}</span>
+			<span class="code timedate d-flex justify-content-center">
+				{{ s.flight1.days.day|date:"SHORT_DATE_FORMAT" }}
+				{{ s.flight1.flight.departure_time|time:"H:i" }}</span>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+				{{ s.flight1.flight.duration|time:"H:i" }}
 			</div>
-			<div class="col-md-1 duration_line">
-				<div class="duration code">
-					{{ s.flight1.flight.duration|time:"H:i" }}
-				</div>
-			</div>
-			<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler"
 				src="{{ s.flight1.flight.arrival.country.flag }}"></div>
-			<div class="col-lg-1 col-md-2 text-center"><span class="code airport d-flex justify-content-center">
-					{{ s.flight1.flight.arrival.code }}</span>
-				<div class="code transit-time row">
-					<div class="col-6 d-flex justify-content-center">{{ s.flight1.flight.arrival_time|time:"H:i" }}-</div>
-					<div class="col-6 d-flex justify-content-center">{{ s.flight2.flight.departure_time|time:"H:i" }}</div>
-				</div>
+		<div class="col-lg-1 col-md-2 text-center"><span class="code airport d-flex justify-content-center">
+				{{ s.flight1.flight.arrival.code }}</span>
+			<div class="code transit-time row">
+				<div class="col-6 d-flex justify-content-center">{{ s.flight1.flight.arrival_time|time:"H:i" }}-</div>
+				<div class="col-6 d-flex justify-content-center">{{ s.flight2.flight.departure_time|time:"H:i" }}</div>
 			</div>
-			<div class="col-md-1 duration_line">
-				<div class="duration code">
-					{{ s.flight2.flight.duration|time:"H:i" }}
-				</div>
+		</div>
+		<div class="col-md-1 duration_line">
+			<div class="duration code">
+				{{ s.flight2.flight.duration|time:"H:i" }}
 			</div>
-			<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler" 
+		</div>
+		<div class="col-lg-1 d-none d-lg-block d-xl-block"><img class="smaler"
 				src="{{ s.flight2.flight.arrival.country.flag }}"></div>
-			<div class="col-lg-2 col-md-3 text-center"><span class="code airport d-flex justify-content-center">
-					{{ s.flight2.flight.arrival.code }}</span>
-				<span class="code timedate d-flex justify-content-center">
-					{{ s.when_arrival|date:"SHORT_DATE_FORMAT" }}
-					{{ s.flight2.flight.arrival_time|time:"H:i" }}</span>
-			</div>
-			
-			<div class="col-md-2">
-				<div class="detail-link-div">
-				<a class="detail-link"
-		href="{% url 'transit-flight-detail' s.ids s.flight1.days.day %}">
-				<span class="code total_price">{{ s.total_price }} $</span><br>
-				<span class="code timedate">{{ s.passenger.count }}
-					passenger{% if s.passenger.count > 1 %}s{% endif %}</span></a>
+		<div class="col-lg-2 col-md-3 text-center"><span class="code airport d-flex justify-content-center">
+				{{ s.flight2.flight.arrival.code }}</span>
+			<span class="code timedate d-flex justify-content-center">
+				{{ s.when_arrival|date:"SHORT_DATE_FORMAT" }}
+				{{ s.flight2.flight.arrival_time|time:"H:i" }}</span>
+		</div>
+
+		<div class="col-md-2">
+			<div class="detail-link-div">
+				<a class="detail-link" href="{% url 'transit-flight-detail' s.ids s.flight1.days.day %}">
+					<span class="code total_price">{{ s.total_price }} $</span><br>
+					<span class="code timedate">{{ s.passenger.count }}
+						passenger{% if s.passenger.count > 1 %}s{% endif %}</span></a>
 			</div>
 		</div>
-		</div>
-	
+	</div>
+
 	{% endif %}
 	{% endfor %}
 
-{% endblock %}
-
-
-
+	{% endblock %}
