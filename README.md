@@ -1,6 +1,8 @@
 # StayFree Airlines
 This is a transport company application.
-It is hosted on [heroku](https://stayfreeairlines.herokuapp.com) and fulfill the following requirements:
+It is hosted on [heroku](https://stayfreeairlines.herokuapp.com).
+
+### Functionality
 1.	searching for direct and return flights, for daily and not daily flights, including routes with one transfer
 2.	during input of departure and arrival autocomplete starts
 3.	clicking on a flight should take users to a page specific to that flight
@@ -15,3 +17,6 @@ In air.js an asynchronous request to the server for the autocomplete form. In fl
 To avoid repetition, search functions was moved from views.py to utils.py.
 
 Python 3.9.0, Django 3.1.4
+
+### Demo 
+![App Promo Gif](StayFree.gif)
